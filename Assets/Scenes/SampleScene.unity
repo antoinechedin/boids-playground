@@ -153,9 +153,13 @@ MonoBehaviour:
   boidPrefab: {fileID: 5083621872032520436, guid: ab4ec0be364055841bb31c4163afc949,
     type: 3}
   numBoid: 100
+  maxSpeed: 0.5
+  minSpeed: 0.2
+  maxForce: 0.03
   alignementCoef: 0.7
   cohesionCoef: 0.7
   separationCoef: 0.7
+  seekCoef: 1
   separationDistance: 5
   neighborDistance: 10
   boids: []

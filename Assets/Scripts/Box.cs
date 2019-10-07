@@ -9,8 +9,14 @@ public class Box : MonoBehaviour
     public GameObject boidPrefab;
     public int numBoid = 10;
 
+    public float maxSpeed, minSpeed;
+    public float maxForce;
+
     [Range(0, 3)]
     public float alignementCoef = 1, cohesionCoef = 1, separationCoef = 1;
+
+    [Range(0,3)]
+    public float seekCoef = 1;
 
     public float separationDistance = 3f;
     public float neighborDistance = 10f;

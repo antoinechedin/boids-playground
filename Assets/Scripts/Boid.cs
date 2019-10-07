@@ -6,15 +6,12 @@ public class Boid : MonoBehaviour
 {
     public Vector3 velocity;
 
-    public float maxSpeed, minSpeed;
-    public float maxForce;
-
     public Transform target;
     public Box box;
 
     private void Start()
     {
-        velocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * (maxSpeed + minSpeed) / 2f ;
+        velocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized * (box.maxSpeed + box.minSpeed) / 2f;
     }
 
     private void Update()
@@ -24,9 +21,10 @@ public class Boid : MonoBehaviour
         acceleration += box.alignementCoef * Alignement();
         acceleration += box.cohesionCoef * Cohesion();
         acceleration += box.separationCoef * Separation();
+        acceleration += box.seekCoef * Seek();
 
         velocity += acceleration;
-        float speed = Mathf.Clamp(velocity.magnitude, minSpeed, maxSpeed);
+        float speed = Mathf.Clamp(velocity.magnitude, box.minSpeed, box.maxSpeed);
         transform.position += velocity.normalized * speed;
 
         transform.LookAt(transform.position + velocity);
@@ -122,10 +120,28 @@ public class Boid : MonoBehaviour
         return Vector3.zero;
     }
 
+    private Vector3 Seek()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Target");
+        if (targets.Length > 0)
+        {
+            GameObject closer = targets[0];
+            for (int i = 1; i < targets.Length; i++)
+            {
+                if (Vector3.Distance(transform.position, closer.transform.position) > Vector3.Distance(transform.position, targets[i].transform.position))
+                {
+                    closer = targets[i];
+                }
+            }
+            return Steer(closer.transform.position);
+        }
+        return Vector3.zero;
+    }
+
     public Vector3 Steer(Vector3 target)
     {
         Vector3 desired = (target - transform.position);
-        desired = desired.normalized * maxSpeed - velocity;
-        return Vector3.ClampMagnitude(desired, maxForce);
+        desired = desired.normalized * box.maxSpeed - velocity;
+        return Vector3.ClampMagnitude(desired, box.maxForce);
     }
 }
