@@ -23,6 +23,20 @@ public class Boid : MonoBehaviour
         acceleration += box.separationCoef * Separation();
         acceleration += box.seekCoef * Seek();
 
+        // Avoid bounds
+        if (transform.position.x > box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.left);
+        if (transform.position.x < -box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.right);
+        if (transform.position.y > box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.down);
+        if (transform.position.y < -box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.up);
+        if (transform.position.z > box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.back);
+        if (transform.position.z < -box.size / 2f)
+            acceleration += Steer(transform.position + Vector3.forward);
+
         velocity += acceleration;
         float speed = Mathf.Clamp(velocity.magnitude, box.minSpeed, box.maxSpeed);
         transform.position += velocity.normalized * speed;
@@ -30,7 +44,7 @@ public class Boid : MonoBehaviour
         transform.LookAt(transform.position + velocity);
 
         // Teleport boid
-        if (transform.position.x > box.size / 2f)
+        /*if (transform.position.x > box.size / 2f)
             transform.position += new Vector3(-box.size, 0, 0);
         if (transform.position.x < -box.size / 2f)
             transform.position += new Vector3(box.size, 0, 0);
@@ -41,7 +55,7 @@ public class Boid : MonoBehaviour
         if (transform.position.z > box.size / 2f)
             transform.position += new Vector3(0, 0, -box.size);
         if (transform.position.z < -box.size / 2f)
-            transform.position += new Vector3(0, 0, box.size);
+            transform.position += new Vector3(0, 0, box.size);*/
     }
 
     public Vector3 Alignement()

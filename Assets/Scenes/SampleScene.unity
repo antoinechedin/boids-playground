@@ -155,7 +155,7 @@ MonoBehaviour:
   numBoid: 100
   maxSpeed: 0.5
   minSpeed: 0.2
-  maxForce: 0.03
+  maxForce: 0.01
   alignementCoef: 0.7
   cohesionCoef: 0.7
   separationCoef: 0.7
